@@ -76,12 +76,12 @@ c.execute("""INSERT INTO STUDENT VALUES(00010009, 'Michael', 'Faraday', 1812, 'B
 c.execute("""INSERT INTO STUDENT VALUES(00010010, 'Ada', 'Lovelace', 1832, 'BCOS', 'lovelacea', 'pass10', NULL);""") 
 
 #adding values to instructor table
-c.execute("""INSERT INTO INSTRUCTOR VALUES(00020001, 'Joseph', 'Fourier', 'Full Prof.', 1820, 'BSEE', 'fourierj', 'word1', NULL);""") 
-c.execute("""INSERT INTO INSTRUCTOR VALUES(00020002, 'Nelson', 'Mandela', 'Full Prof.', 1994, 'HUSS', 'mandelan', 'word2', NULL);""") 
-c.execute("""INSERT INTO INSTRUCTOR VALUES(00020003, 'Galileo', 'Galilei', 'Full Prof.', 1600, 'BSAS', 'galileig', 'word3', NULL);""") 
-c.execute("""INSERT INTO INSTRUCTOR VALUES(00020004, 'Alan', 'Turing', 'Associate Prof.', 1940, 'BSCO', 'turinga', 'word4', NULL);""") 
-c.execute("""INSERT INTO INSTRUCTOR VALUES(00020005, 'Katie', 'Bouman', 'Assistant Prof.', 2019, 'BCOS', 'boumank', 'word5', NULL);""") 
-c.execute("""INSERT INTO INSTRUCTOR VALUES(00020006, 'Daniel', 'Bernoulli', 'Associate Prof.', 1760, 'BSME', 'bernoullid', 'word6', NULL);""") 
+c.execute("""INSERT INTO INSTRUCTOR VALUES(00020001, 'Joseph', 'Fourier', 'Full Prof.', 'BSEE', 'fourierj', 'word1', NULL);""") 
+c.execute("""INSERT INTO INSTRUCTOR VALUES(00020002, 'Nelson', 'Mandela', 'Full Prof.', 'HUSS', 'mandelan', 'word2', NULL);""") 
+c.execute("""INSERT INTO INSTRUCTOR VALUES(00020003, 'Galileo', 'Galilei', 'Full Prof.', 'BSAS', 'galileig', 'word3', NULL);""") 
+c.execute("""INSERT INTO INSTRUCTOR VALUES(00020004, 'Alan', 'Turing', 'Associate Prof.', 'BSCO', 'turinga', 'word4', NULL);""") 
+c.execute("""INSERT INTO INSTRUCTOR VALUES(00020005, 'Katie', 'Bouman', 'Assistant Prof.', 'BCOS', 'boumank', 'word5', NULL);""") 
+c.execute("""INSERT INTO INSTRUCTOR VALUES(00020006, 'Daniel', 'Bernoulli', 'Associate Prof.', 'BSME', 'bernoullid', 'word6', NULL);""") 
 
 #adding value to admin table
 c.execute("""INSERT INTO ADMIN VALUES(00030001, 'Malala', 'Yousafzai', 'yousafzaim', "password1");""") 
