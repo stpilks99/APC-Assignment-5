@@ -279,5 +279,40 @@ class Student(User):
         # commit changes to db
         database.commit()
 
+# class Instructor derived from User
+class Instructor(User):
+
+    # constructor
+    def __init__(self, firstName, lastName, ID):
+        super().__init__(firstName, lastName, ID)
+        print('Instructor {} {} [{}] created'.format(self.firstName, self.lastName, self.ID))
+
+    def printRoster(self):
+        getCRN = input('enter CRN of course to view roster: ')
+        getRoster = 'SELECT Course.Roster FROM Course WHERE Course.CRN = ' + getCRN
+        c.execute(getRoster)
+        rosterResult = list(c.fetchall())
+
+        rosterString = ''
+        for row in rosterResult:
+            rosterString = row[0]
+        
+        rosterList = []
+        if '-' in rosterString:
+            rosterList = rosterString.split('-')
+        else:
+            rosterList.append(rosterString)
+        
+        studentNames = []
+        for studentID in rosterList:
+            getStudentNames = 'SELECT Student.FirstName, Student.LastName, Student.Major, Student.GradYear FROM Student WHERE Student.ID = ' + studentID
+            c.execute(getStudentNames)
+            studentItems = c.fetchall()
+            studentNames.append(studentItems)
+
+        for eachStudent in studentNames:
+            studentInfo = str(eachStudent[0][0]) + ' ' + str(eachStudent[0][1]) + ' - ' + str(eachStudent[0][2]) + ' - Class of ' + str(eachStudent[0][3])
+            print(studentInfo)        
+
 c.close()
 database.close()
