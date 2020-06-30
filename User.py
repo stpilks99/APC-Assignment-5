@@ -293,18 +293,18 @@ class Student(User):
     # student menu function
     def studentMenu(self):
         choice=""
-        loggedIn=1
-        while loggedIn==1:
+
+        while 1:
             choice = input("Welcome to the CURSE registration system.\n1. Add a course\n2. Drop a course\n3. Search courses\n4. View/print schedule\n5. Check conflicts\n6. Logout\nEnter choice : ")
             if choice == '1':
                 print("Add a course to your schedule.")
-                #addCourse()
+                addCourse()
             elif choice == '2':
                 print("Drop a course from your schedule.")
-                #dropCourse()
+                rmCourse()
             elif choice == '3':
                 print("Searching courses.")
-                #searchCourses()
+                searchCourses()
             elif choice == '4':
                 print("Please select a semester and year : ")
                 #printSchedule()
@@ -313,8 +313,7 @@ class Student(User):
                 #checkConflict()
             elif choice == '6':
                 print("Logging out...")
-                loggedIn=0
-                #logout()
+                logout()
 
 # class Instructor derived from User
 class Instructor(User):
@@ -355,18 +354,20 @@ class Instructor(User):
     # instructor menu function
     def instructorMenu(self):
         choice=""
-        loggedIn=1
-        while loggedIn==1:
+
+        while 1:
             choice = input("Welcome to the CURSE registration system.\n1. Search courses\n2. View/print schedule\n3. Print roster\n4. Logout\nEnter choice : ")
             if choice == '1': 
                 print("Searching courses.")
+                searchCourses()
             elif choice == '2':
                 print("Please select a semester and year : ")
             elif choice == '3': 
                 print("Please select a course to print roster : ")
+                printRoster()
             elif choice == '4':
                 print("Logging out...")
-                loggedIn=0
+                logout()
 
 # class admin derived from user
 class admin(User):  
@@ -434,8 +435,8 @@ class admin(User):
     # admin menu function
     def adminMenu(self):
         choice = ""
-        loggedIn=1
-        while loggedIn==1:
+
+        while 1:
             choice = input("Welcome to the CURSE registration system.\n1. Add a course to system\n2. Remove a course from system\n3. Search courses\n4. View/print schedule\n5. Print roster\n6. Link/unlink user from course\n7. Add user\n8. Logout\nEnter choice : ")
             if choice == '1':
                 addCourseSys()
@@ -443,6 +444,7 @@ class admin(User):
                 removeCourseSys()
             elif choice == '3':
                 print("Searching courses.")
+                searchCourses()
             elif choice == '4':
                 print("Enter WID# of user to view their schedule : ")
             elif choice == '5': 
@@ -454,7 +456,7 @@ class admin(User):
                 print("Add student or instructor?")
             elif choice == '8':
                 print("Logging out...")
-                loggedIn=0
+                logout()
 
 c.close()
 database.close()
