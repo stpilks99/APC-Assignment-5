@@ -12,6 +12,7 @@ class User:
         self.lastName = lastName
         self.ID = ID
 
+    # author: Naomi Torre
     def login(self):
         user = input("Are you a Student, Admin or Instructor? ")
         if user == 'Student' or user == 'Admin' or user == 'Instructor':
