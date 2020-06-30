@@ -13,10 +13,11 @@ cursor = database.cursor()
 
 def login():
     user = input("Are you a Student, Admin or Instructor? ")
-    if user == 'Student' or 'Admin' or 'Instructor':
+    if user == 'Student' or user == 'Admin' or user == 'Instructor':
         username = input("Enter username: ")
         upassword = input("Enter password: ") 
     
+        #Checking credentials
         cursor.execute("""SELECT Email from '""" + user + """' WHERE '""" + user + """'.Email = '""" + username + """';""")
         qr1 = cursor.fetchall()
     
@@ -39,9 +40,13 @@ def login():
                     #adminMenu()
         except UnboundLocalError as error:
             print("\ninvalid credentials.")
-            login()
+            again = input("Would you like to try again? \nEnter 1 to go back to login \nEnter 2 to exit\n")
+            if again == '1':
+                login()
+            elif again == '2': 
+                sys.exit()
             
-    elif user != 'Student' or 'Instructor' or 'Admin': 
+    else: 
         print('\nPlease enter a correct user type.')
         login()
 
@@ -149,7 +154,3 @@ def logout():
 login()
 searchCourses()
 logout()
-
-
-
-
