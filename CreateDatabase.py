@@ -65,4 +65,5 @@ CREATE TABLE Course (
 """
 c.execute(createCourseTable)
 
+c.close()
 database.close()
