@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2020-06-30T07:04:31.910Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36" etag="ZZNo7_7Y22UPfbdqxHwW" version="13.3.5" type="github">
+<mxfile host="app.diagrams.net" modified="2020-06-30T07:05:49.962Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36" etag="zmGx_X9x3rYMzBAV1xa0" version="13.3.5" type="github">
   <diagram id="jz2GWTbr_Bam_6cfonU8" name="Page-1">
-    <mxGraphModel dx="1221" dy="682" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="716" dy="400" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -109,14 +109,14 @@
         <mxCell id="WOxTpeTA80bt1Znz08GQ-52" value="[authorization]" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="100" y="350" width="40" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="WOxTpeTA80bt1Znz08GQ-54" value="" style="endArrow=classic;html=1;entryX=-0.238;entryY=0.965;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" target="WOxTpeTA80bt1Znz08GQ-12" edge="1">
+        <mxCell id="WOxTpeTA80bt1Znz08GQ-54" value="" style="endArrow=classic;html=1;exitX=1.028;exitY=0.968;exitDx=0;exitDy=0;exitPerimeter=0;" parent="1" edge="1" source="WOxTpeTA80bt1Znz08GQ-8">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="112" y="477" as="sourcePoint" />
-            <mxPoint x="530" y="478" as="targetPoint" />
+            <mxPoint x="110" y="477" as="sourcePoint" />
+            <mxPoint x="538" y="477" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="WOxTpeTA80bt1Znz08GQ-55" value="logout()" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
-          <mxGeometry x="280" y="450" width="40" height="20" as="geometry" />
+          <mxGeometry x="290" y="460" width="40" height="20" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
