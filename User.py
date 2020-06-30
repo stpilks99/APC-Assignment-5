@@ -2,7 +2,7 @@ import sqlite3
 import sys
 
 database = sqlite3.connect('CURSE.db')
-c = database.cursor()
+c = database.c()
 
 class User:
 
@@ -13,6 +13,7 @@ class User:
         self.ID = ID
 
     # author: Naomi Torre
+    # login function
     def login(self):
         user = input("Are you a Student, Admin or Instructor? ")
         if user == 'Student' or user == 'Admin' or user == 'Instructor':
@@ -52,6 +53,8 @@ class User:
             print('\nPlease enter a correct user type.')
             login()
 
+    # author: Naomi Torre
+    # search all courses function
     def searchAllCourses(self):
         print("\nHere are all the courses: \n")
         c.execute("""SELECT * from Course """)
@@ -59,6 +62,8 @@ class User:
         for i in qr:
             print(i)
 
+    # author: Naomi Torre
+    # search courses with parameters
     def searchCoursesByParam(self):
         print("Here are the parameters to search by: \n1 to search by semester \n2 to search title \n3 to search by CRN \n4 to search by department \n5 to search by instructor \n6 to search by time \n7 to search by days \n8 to search by credits")
         choice = input("Enter number that corresponds to parameter of choice: ")
@@ -138,7 +143,9 @@ class User:
         else: 
             print('invalid choice! \n Please try again.')
             searchCoursesByParam()
-                
+
+    # author: Naomi Torre
+    # search courses function           
     def searchCourses(self):
         num = input("\nEnter 1 to search all courses or 2 to search with parameters: ")
         if num == '1':
@@ -148,7 +155,9 @@ class User:
         else:
             print("invalid choice! \n Please try again.")
             searchCourses()
-        
+
+    # author: Naomi Torre
+    # logout function    
     def logout(self):
         print(" \nYou have successfully logged out. \nFor security reasons, exit your web browser.")
         sys.exit()
@@ -280,6 +289,33 @@ class Student(User):
         # commit changes to db
         database.commit()
 
+    # author: Sterling
+    # student menu function
+    def studentMenu(self):
+        choice=""
+        loggedIn=1
+        while loggedIn==1:
+            choice = input("Welcome to the CURSE registration system.\n1. Add a course\n2. Drop a course\n3. Search courses\n4. View/print schedule\n5. Check conflicts\n6. Logout\nEnter choice : ")
+            if choice == '1':
+                print("Add a course to your schedule.")
+                #addCourse()
+            elif choice == '2':
+                print("Drop a course from your schedule.")
+                #dropCourse()
+            elif choice == '3':
+                print("Searching courses.")
+                #searchCourses()
+            elif choice == '4':
+                print("Please select a semester and year : ")
+                #printSchedule()
+            elif choice == '5':
+                print("Checking schedule for conflicts.")
+                #checkConflict()
+            elif choice == '6':
+                print("Logging out...")
+                loggedIn=0
+                #logout()
+
 # class Instructor derived from User
 class Instructor(User):
 
@@ -313,7 +349,112 @@ class Instructor(User):
 
         for eachStudent in studentNames:
             studentInfo = str(eachStudent[0][0]) + ' ' + str(eachStudent[0][1]) + ' - ' + str(eachStudent[0][2]) + ' - Class of ' + str(eachStudent[0][3])
-            print(studentInfo)        
+            print(studentInfo) 
+
+    # author: Sterling
+    # instructor menu function
+    def instructorMenu(self):
+        choice=""
+        loggedIn=1
+        while loggedIn==1:
+            choice = input("Welcome to the CURSE registration system.\n1. Search courses\n2. View/print schedule\n3. Print roster\n4. Logout\nEnter choice : ")
+            if choice == '1': 
+                print("Searching courses.")
+            elif choice == '2':
+                print("Please select a semester and year : ")
+            elif choice == '3': 
+                print("Please select a course to print roster : ")
+            elif choice == '4':
+                print("Logging out...")
+                loggedIn=0
+
+# class admin derived from user
+class admin(User):  
+    # constructor
+    def __init__(self, firstName, lastName, ID):
+        super().__init__(firstName, lastName, ID)
+        print('Admin {} {} [{}] created'.format(self.firstName, self.lastName, self.ID)) 
+
+    # author: Sterling
+    # add courses to system function
+    def addCourseSys(self):
+        print("Adding a course to the system.")
+        title = input("Title : ")
+        CRN = input("CRN : ")
+        
+        #checking if the CRN already exists
+        c.execute("""SELECT * FROM COURSE WHERE CRN = """ + CRN + """;""")
+        # fetchone() returns a 0 if nothing was found
+        query_result = c.fetchone()
+
+        #result that returned 
+        if (query_result is not None):
+            print("Error : CRN already exists.")
+            for i in query_result:
+                print(i)
+                
+        else:
+            dept = input("Department : ")
+            fName = input("Instructor first name : ")
+            lName = input("Instructor last name : ")
+            time = input("Time slot : ")
+            day = input("Days (MTWRF) : ")
+            semester = input("Semester (Fall, Spring, Summer) : ")
+            year = input("Year : ")
+            cred = input("# of credits : ")
+            # inserting new info into database
+            c.execute("""INSERT INTO COURSE VALUES('""" + title + """', """ + CRN + """, '""" + dept + """', '""" + fName + """', '""" + lName + """', '""" + time + """', '""" + day + """', '""" + semester + """', """ + year + """, """ + cred + """);""")
+            c.execute("""SELECT * FROM COURSE WHERE CRN = """ + CRN + """;""")
+            query_result = c.fetchone()
+            for i in query_result:
+                print(i)
+            print("Success! Course added to system.")
+        
+
+    # author: Sterling
+    # remove courses from system
+    def removeCourseSys(self):
+        print("Removing a course from the system.")
+        removeCRN = input("Enter CRN of course to remove : ")
+        c.execute("""SELECT * FROM COURSE WHERE CRN = """ + removeCRN + """;""")
+        query_result = c.fetchone()
+        if (query_result is None):
+            print("Error: CRN entered does not match a course in the database.")
+        else:
+            for i in query_result:
+                print(i)
+            choice = input("Are you sure you want to remove this? y/n : ")
+            if (choice == 'y'):
+                c.execute("""DELETE FROM COURSE WHERE CRN = """ + removeCRN + """;""")
+                print("Success.")
+            else:
+                print("Canceled. No changes have been made.")    
+
+    # author: Sterling
+    # admin menu function
+    def adminMenu(self):
+        choice = ""
+        loggedIn=1
+        while loggedIn==1:
+            choice = input("Welcome to the CURSE registration system.\n1. Add a course to system\n2. Remove a course from system\n3. Search courses\n4. View/print schedule\n5. Print roster\n6. Link/unlink user from course\n7. Add user\n8. Logout\nEnter choice : ")
+            if choice == '1':
+                addCourseSys()
+            elif choice == '2':
+                removeCourseSys()
+            elif choice == '3':
+                print("Searching courses.")
+            elif choice == '4':
+                print("Enter WID# of user to view their schedule : ")
+            elif choice == '5': 
+                print("Enter CRN to print roster : ")
+            elif choice == '6':
+                print("Link/unlink student or instructor to course.")
+            #linkUnlink
+            elif choice == '7':
+                print("Add student or instructor?")
+            elif choice == '8':
+                print("Logging out...")
+                loggedIn=0
 
 c.close()
 database.close()
