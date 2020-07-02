@@ -2,7 +2,7 @@ import sqlite3
 import sys
 
 database = sqlite3.connect('CURSE.db')
-c = database.c()
+c = database.cursor()
 
 class User:
 
@@ -410,6 +410,9 @@ class admin(User):
             for i in query_result:
                 print(i)
             print("Success! Course added to system.")
+
+        # commit changes to db
+        database.commit()    
         
 
     # author: Sterling
@@ -429,7 +432,10 @@ class admin(User):
                 c.execute("""DELETE FROM COURSE WHERE CRN = """ + removeCRN + """;""")
                 print("Success.")
             else:
-                print("Canceled. No changes have been made.")    
+                print("Canceled. No changes have been made.")
+
+        # commit changes to db
+        database.commit()    
 
     # author: Sterling
     # admin menu function
