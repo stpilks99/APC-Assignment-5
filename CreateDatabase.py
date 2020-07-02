@@ -91,7 +91,7 @@ c.execute("""INSERT INTO COURSE VALUES(31799, 'Applied Programming Concepts','BS
 c.execute("""INSERT INTO COURSE VALUES(31406, 'Signals and Systems', 'HUSS', 'Nelson Mandela', '10-11:50am', 'MW', 'Summer', 2020, 4, NULL);""") 
 c.execute("""INSERT INTO COURSE VALUES(31290, 'Computer Architecture', 'BSAS', 'Galileo Galilei', '9:30-10:50am', 'TR', 'Summer', 2020, 4, NULL);""") 
 c.execute("""INSERT INTO COURSE VALUES(31047, 'Advanced Digital Circuit Design', 'BSCO', 'Alan Turing', '8-9:20am','WF', 'Summer', 2020, 4, NULL);""") 
-c.execute("""INSERT INTO COURSE VALUES(31044, 'Computer Networks', 'BCOS', 'Katie Bouman', '8-9:20am', 'TR', 'Summer', 2020, 4, '10101-10102');""") 
+c.execute("""INSERT INTO COURSE VALUES(31044, 'Computer Networks', 'BCOS', 'Katie Bouman', '8-9:20am', 'TR', 'Summer', 2020, 4, '10001-10002-10003-10004');""") 
 
 #printing student table
 print("Student table:")

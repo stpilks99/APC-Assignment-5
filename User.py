@@ -43,8 +43,10 @@ class User:
         
         elif choice == '2':
             title = input("Enter title to search by: ")
+            c = database.cursor()
             c.execute("""SELECT * from Course WHERE Title = '""" + title + """';""")
             qr = c.fetchall()
+            c.close()
             
             print("\nHere are all the courses titled " + title + ":\n")
             for i in qr:
@@ -52,8 +54,10 @@ class User:
         
         elif choice == '3':
             crn = input("Enter CRN to search by: ")
+            c = database.cursor()
             c.execute("""SELECT * from Course WHERE CRN = '""" + crn + """';""")
             qr = c.fetchall()
+            c.close()
             
             print("\nHere are all the courses with " + crn + " as a CRN:\n")
             for i in qr:
@@ -334,8 +338,8 @@ class Instructor(User):
             c = database.cursor()
             c.execute(getStudentNames)
             studentItems = c.fetchall()
-            c.close()
             studentNames.append(studentItems)
+            c.close()
 
         for eachStudent in studentNames:
             studentInfo = str(eachStudent[0][0]) + ' ' + str(eachStudent[0][1]) + ' - ' + str(eachStudent[0][2]) + ' - Class of ' + str(eachStudent[0][3])
@@ -417,8 +421,8 @@ class Admin(User):
         removeCRN = input("Enter CRN of course to remove : ")
         c = database.cursor()
         c.execute("""SELECT * FROM COURSE WHERE CRN = """ + removeCRN + """;""")
-        c.close()
         query_result = c.fetchone()
+        c.close()
         if (query_result is None):
             print("Error: CRN entered does not match a course in the database.")
         else:
