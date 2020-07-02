@@ -35,12 +35,12 @@ class User:
             try:
                 if username == result1 and upassword == result2 :
                     print("\nLogin successful!")
-                    #if user == Student:
-                        #studentMenu()
-                    #elif user == Instructor:
-                        #instructorMenu()
-                    #elif user == Admin:
-                        #adminMenu()
+                    if user == Student:
+                        studentMenu()
+                    elif user == Instructor:
+                        instructorMenu()
+                    elif user == Admin:
+                        adminMenu()
             except UnboundLocalError as error:
                 print("\ninvalid credentials.")
                 again = input("Would you like to try again? \nEnter 1 to go back to login \nEnter 2 to exit\n")
