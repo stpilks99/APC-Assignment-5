@@ -370,7 +370,7 @@ class Instructor(User):
                 logout()
 
 # class admin derived from user
-class admin(User):  
+class Admin(User):  
     # constructor
     def __init__(self, firstName, lastName, ID):
         super().__init__(firstName, lastName, ID)
