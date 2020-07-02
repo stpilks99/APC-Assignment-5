@@ -338,12 +338,12 @@ class Instructor(User):
             getStudentNames = 'SELECT Student.FirstName, Student.LastName, Student.Major, Student.GradYear FROM Student WHERE Student.ID = ' + studentID
             c = database.cursor()
             c.execute(getStudentNames)
-            studentItems = c.fetchall()
+            studentItems = c.fetchone()
             studentNames.append(studentItems)
             c.close()
 
         for eachStudent in studentNames:
-            studentInfo = str(eachStudent[0][0]) + ' ' + str(eachStudent[0][1]) + ' - ' + str(eachStudent[0][2]) + ' - Class of ' + str(eachStudent[0][3])
+            studentInfo = str(eachStudent[0]) + ' ' + str(eachStudent[1]) + ' - ' + str(eachStudent[2]) + ' - Class of ' + str(eachStudent[3])
             print(studentInfo) 
 
     # author: Sterling
