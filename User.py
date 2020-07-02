@@ -307,6 +307,7 @@ class Student(User):
                 logout()
 
 # class Instructor derived from User
+# ERROR WITH PRINTING COURSE ROSTER
 class Instructor(User):
 
     # constructor
@@ -393,21 +394,21 @@ class Admin(User):
                 
         else:
             dept = input("Department : ")
-            fName = input("Instructor first name : ")
-            lName = input("Instructor last name : ")
+            iName = input("Instructor: ")
             time = input("Time slot : ")
             day = input("Days (MTWRF) : ")
             semester = input("Semester (Fall, Spring, Summer) : ")
             year = input("Year : ")
             cred = input("# of credits : ")
+            roster = 'NULL'
             # inserting new info into database
             c = database.cursor()
-            c.execute("""INSERT INTO COURSE VALUES('""" + title + """', """ + CRN + """, '""" + dept + """', '""" + fName + """', '""" + lName + """', '""" + time + """', '""" + day + """', '""" + semester + """', """ + year + """, """ + cred + """);""")
-            c.execute("""SELECT * FROM COURSE WHERE CRN = """ + CRN + """;""")
+            c.execute("""INSERT INTO Course VALUES(""" + CRN + """, '""" + title + """', '""" + dept + """', '""" + iName + """', '""" + time + """', '""" + day + """', '""" + semester + """', """ + year + """, """ + cred + """, """ + roster + """);""")
+            c.execute("""SELECT * FROM Course WHERE CRN = """ + CRN + """;""")
             query_result = c.fetchone()
             c.close()
             for i in query_result:
-                print(i)
+                print(str(i))
             print("Success! Course added to system.")
 
         # commit changes to db
