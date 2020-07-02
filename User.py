@@ -2,8 +2,8 @@ import sqlite3
 import sys
 
 database = sqlite3.connect('CURSE.db')
-c = database.cursor()
 
+# base class User
 class User:
 
     # constructor
@@ -13,52 +13,13 @@ class User:
         self.ID = ID
 
     # author: Naomi Torre
-    # login function
-    def login(self):
-        user = input("Are you a Student, Admin or Instructor? ")
-        if user == 'Student' or user == 'Admin' or user == 'Instructor':
-            username = input("Enter username: ")
-            upassword = input("Enter password: ") 
-        
-            #Checking credentials
-            c.execute("""SELECT Email from '""" + user + """' WHERE '""" + user + """'.Email = '""" + username + """';""")
-            qr1 = c.fetchall()
-        
-            for i in qr1:
-                result1 = i[0]
-        
-            c.execute("""SELECT Password from '""" + user + """' WHERE Password = '""" + upassword + """' AND Email = '""" + username + """';""")
-            qr2= c.fetchall()
-        
-            for i in qr2:
-                result2 = i[0]
-            try:
-                if username == result1 and upassword == result2 :
-                    print("\nLogin successful!")
-                    if user == Student:
-                        studentMenu()
-                    elif user == Instructor:
-                        instructorMenu()
-                    elif user == Admin:
-                        adminMenu()
-            except UnboundLocalError as error:
-                print("\ninvalid credentials.")
-                again = input("Would you like to try again? \nEnter 1 to go back to login \nEnter 2 to exit\n")
-                if again == '1':
-                    login()
-                elif again == '2': 
-                    sys.exit()
-                
-        else: 
-            print('\nPlease enter a correct user type.')
-            login()
-
-    # author: Naomi Torre
     # search all courses function
     def searchAllCourses(self):
         print("\nHere are all the courses: \n")
+        c = database.cursor()
         c.execute("""SELECT * from Course """)
         qr = c.fetchall()
+        c.close()
         for i in qr:
             print(i)
 
@@ -71,8 +32,10 @@ class User:
         if choice == '1':
             term = input("\nEnter the semester in which you would like to search courses for: ")
             yr = input("\nEnter the year of the semester: ")
+            c = database.cursor()
             c.execute("""SELECT * from Course WHERE Semester = '""" + term + """' AND Year = '""" + yr + """';""")
             qr = c.fetchall()
+            c.close()
             
             print("\nHere are all the courses in " + term + " " + yr + ":\n")
             for i in qr:
@@ -98,8 +61,10 @@ class User:
             
         elif choice == '4':
             department = input("Enter department to search by: ")
+            c = database.cursor()
             c.execute("""SELECT * from Course WHERE Department = '""" + department + """';""")
             qr = c.fetchall()
+            c.close()
             
             print("\nHere are all the courses in the department " + department + ":\n")
             for i in qr:
@@ -107,17 +72,21 @@ class User:
             
         elif choice == '5':
             instructor = input("Enter instructor to search by: ")
+            c = database.cursor()
             c.execute("""SELECT * from Course WHERE Instructor = '""" + instructor + """';""")
             qr = c.fetchall()
-            
+            c.close()
+
             print("\nHere are all the courses taught by " + instructor + ":\n")
             for i in qr:
                 print(i)
             
         elif choice == '6':
             time = input("Enter time to search by: ")
+            c = database.cursor()
             c.execute("""SELECT * from Course WHERE Times = '""" + time + """';""")
             qr = c.fetchall()
+            c.close()
             
             print("\nHere are all the courses taught at  " + time + ":\n")
             for i in qr:
@@ -125,8 +94,10 @@ class User:
             
         elif choice == '7':
             days = input("Enter days to search by: ")
+            c = database.cursor()
             c.execute("""SELECT * from Course WHERE DaysOfWeek = '""" + days + """';""")
             qr = c.fetchall()
+            c.close()
             
             print("\nHere are all the courses taught on " + days + ":\n")
             for i in qr:
@@ -134,34 +105,31 @@ class User:
         
         elif choice == '8':
             creds = input("Enter number of credits to search by: ")
+            c = database.cursor()
             c.execute("""SELECT * from Course WHERE Credits = '""" + creds + """';""")
             qr = c.fetchall()
+            c.close()
             
             print("\nHere are all the courses with " + creds + " credits: \n")
             for i in qr:
                 print(i)
         else: 
             print('invalid choice! \n Please try again.')
-            searchCoursesByParam()
+            self.searchCoursesByParam()
 
     # author: Naomi Torre
     # search courses function           
     def searchCourses(self):
         num = input("\nEnter 1 to search all courses or 2 to search with parameters: ")
         if num == '1':
-            searchAllCourses()
+            self.searchAllCourses()
         elif num == '2':
-            searchCoursesByParam()
+            self.searchCoursesByParam()
         else:
             print("invalid choice! \n Please try again.")
-            searchCourses()
+            self.searchCourses()
 
-    # author: Naomi Torre
-    # logout function    
-    def logout(self):
-        print(" \nYou have successfully logged out. \nFor security reasons, exit your web browser.")
-        sys.exit()
-
+# class Student derived from User
 class Student(User):
 
     # constructor
@@ -177,19 +145,25 @@ class Student(User):
         getCRN = input('enter CRN of course you want to add: ')
 
         # get ID of student adding the course to their schedule
+        c = database.cursor()
         getStudentID = 'SELECT Student.ID FROM Student WHERE Student.Email = \'' + studentEmail + '\''
         c.execute(getStudentID)
         studentResult = list(c.fetchall())
+        c.close()
 
         # get initial student schedule
+        c = database.cursor()
         getSched = 'SELECT Student.Schedule FROM Student WHERE Student.ID = ' + studentID
         c.execute(getSched)
         schedule = list(c.fetchall())
+        c.close()
 
         # get initial course roster
+        c = database.cursor()
         getRoster = 'SELECT Course.Roster FROM Course WHERE Course.CRN = ' + getCRN
         c.execute(getRoster)
         roster = list(c.fetchall())
+        c.close()
 
         # add student ID to course roster in Course table
         newRoster = ''
@@ -200,8 +174,10 @@ class Student(User):
             elif row[0] != None:
                 for value in studentResult:
                     newRoster = str(row[0]) + '-' + str(value[0])
+        c = database.cursor()
         updateRoster = 'UPDATE Course SET Roster = \'' + newRoster + '\' WHERE Course.CRN = ' + getCRN
         c.execute(updateRoster)
+        c.close()
 
         # add course to student schedule
         newSchedule = ''
@@ -212,8 +188,10 @@ class Student(User):
             elif row[0] != None:
                 for value in studentResult:
                     newSchedule = str(row[0]) + '-' + getCRN
+        c = database.cursor()
         updateSched = 'UPDATE Student SET Schedule = \'' + newSchedule + '\' WHERE Student.ID = ' + studentID
         c.execute(updateSched)
+        c.close()
         
         # commit changes to db
         database.commit()
@@ -226,19 +204,24 @@ class Student(User):
         getCRN = input('enter CRN of course you want to remove: ')
 
         # get ID of student removing the course from their schedule
+        c = database.cursor()
         getStudentID = 'SELECT Student.ID FROM Student WHERE Student.Email = \'' + studentEmail + '\''
         c.execute(getStudentID)
         studentResult = list(c.fetchall())
 
         # get initial student schedule
+        c = database.cursor()
         getSched = 'SELECT Student.Schedule FROM Student WHERE Student.ID = ' + studentID
         c.execute(getSched)
         schedule = list(c.fetchall())
+        c.close()
 
         # get initial course roster
+        c = database.cursor()
         getRoster = 'SELECT Course.Roster FROM Course WHERE Course.CRN = ' + getCRN
         c.execute(getRoster)
         roster = list(c.fetchall())
+        c.close()
 
         # remove student ID from course roster in Course table
         newRoster = ''
@@ -260,8 +243,10 @@ class Student(User):
                             newRoster = ''
                     else:
                         print('you aren\'t registered in this course')
+        c = database.cursor()
         updateRoster = 'UPDATE Course SET Roster = \'' + newRoster + '\' WHERE Course.CRN = ' + getCRN
         c.execute(updateRoster)
+        c.close()
 
         # remove course from student schedule
         newSched = ''
@@ -283,28 +268,30 @@ class Student(User):
                             newSched = ''
                     else:
                         print('you aren\'t registered in this course')
+        c = database.cursor()
         updateSched = 'UPDATE Student SET Schedule = \'' + newSched + '\' WHERE Student.ID = ' + studentID
         c.execute(updateSched)
+        c.close()
         
         # commit changes to db
         database.commit()
 
     # author: Sterling
     # student menu function
-    def studentMenu(self):
+    def studentMenu(self, sID, sEmail):
         choice=""
 
         while 1:
             choice = input("Welcome to the CURSE registration system.\n1. Add a course\n2. Drop a course\n3. Search courses\n4. View/print schedule\n5. Check conflicts\n6. Logout\nEnter choice : ")
             if choice == '1':
                 print("Add a course to your schedule.")
-                addCourse()
+                self.addCourse(sID, sEmail)
             elif choice == '2':
                 print("Drop a course from your schedule.")
-                rmCourse()
+                self.rmCourse(sID, sEmail)
             elif choice == '3':
                 print("Searching courses.")
-                searchCourses()
+                self.searchCourses()
             elif choice == '4':
                 print("Please select a semester and year : ")
                 #printSchedule()
@@ -325,9 +312,11 @@ class Instructor(User):
 
     def printRoster(self):
         getCRN = input('enter CRN of course to view roster: ')
+        c = database.cursor()
         getRoster = 'SELECT Course.Roster FROM Course WHERE Course.CRN = ' + getCRN
         c.execute(getRoster)
         rosterResult = list(c.fetchall())
+        c.close()
 
         rosterString = ''
         for row in rosterResult:
@@ -342,8 +331,10 @@ class Instructor(User):
         studentNames = []
         for studentID in rosterList:
             getStudentNames = 'SELECT Student.FirstName, Student.LastName, Student.Major, Student.GradYear FROM Student WHERE Student.ID = ' + studentID
+            c = database.cursor()
             c.execute(getStudentNames)
             studentItems = c.fetchall()
+            c.close()
             studentNames.append(studentItems)
 
         for eachStudent in studentNames:
@@ -359,12 +350,12 @@ class Instructor(User):
             choice = input("Welcome to the CURSE registration system.\n1. Search courses\n2. View/print schedule\n3. Print roster\n4. Logout\nEnter choice : ")
             if choice == '1': 
                 print("Searching courses.")
-                searchCourses()
+                self.searchCourses()
             elif choice == '2':
                 print("Please select a semester and year : ")
             elif choice == '3': 
                 print("Please select a course to print roster : ")
-                printRoster()
+                self.printRoster()
             elif choice == '4':
                 print("Logging out...")
                 logout()
@@ -384,9 +375,11 @@ class Admin(User):
         CRN = input("CRN : ")
         
         #checking if the CRN already exists
+        c = database.cursor()
         c.execute("""SELECT * FROM COURSE WHERE CRN = """ + CRN + """;""")
         # fetchone() returns a 0 if nothing was found
         query_result = c.fetchone()
+        c.close()
 
         #result that returned 
         if (query_result is not None):
@@ -404,9 +397,11 @@ class Admin(User):
             year = input("Year : ")
             cred = input("# of credits : ")
             # inserting new info into database
+            c = database.cursor()
             c.execute("""INSERT INTO COURSE VALUES('""" + title + """', """ + CRN + """, '""" + dept + """', '""" + fName + """', '""" + lName + """', '""" + time + """', '""" + day + """', '""" + semester + """', """ + year + """, """ + cred + """);""")
             c.execute("""SELECT * FROM COURSE WHERE CRN = """ + CRN + """;""")
             query_result = c.fetchone()
+            c.close()
             for i in query_result:
                 print(i)
             print("Success! Course added to system.")
@@ -420,7 +415,9 @@ class Admin(User):
     def removeCourseSys(self):
         print("Removing a course from the system.")
         removeCRN = input("Enter CRN of course to remove : ")
+        c = database.cursor()
         c.execute("""SELECT * FROM COURSE WHERE CRN = """ + removeCRN + """;""")
+        c.close()
         query_result = c.fetchone()
         if (query_result is None):
             print("Error: CRN entered does not match a course in the database.")
@@ -429,7 +426,9 @@ class Admin(User):
                 print(i)
             choice = input("Are you sure you want to remove this? y/n : ")
             if (choice == 'y'):
+                c = database.cursor()
                 c.execute("""DELETE FROM COURSE WHERE CRN = """ + removeCRN + """;""")
+                c.close()
                 print("Success.")
             else:
                 print("Canceled. No changes have been made.")
@@ -445,12 +444,12 @@ class Admin(User):
         while 1:
             choice = input("Welcome to the CURSE registration system.\n1. Add a course to system\n2. Remove a course from system\n3. Search courses\n4. View/print schedule\n5. Print roster\n6. Link/unlink user from course\n7. Add user\n8. Logout\nEnter choice : ")
             if choice == '1':
-                addCourseSys()
+                self.addCourseSys()
             elif choice == '2':
-                removeCourseSys()
+                self.removeCourseSys()
             elif choice == '3':
                 print("Searching courses.")
-                searchCourses()
+                self.searchCourses()
             elif choice == '4':
                 print("Enter WID# of user to view their schedule : ")
             elif choice == '5': 
@@ -464,5 +463,66 @@ class Admin(User):
                 print("Logging out...")
                 logout()
 
-c.close()
-database.close()
+# author: Naomi Torre
+# login function
+def login():
+    user = input("Are you a Student, Admin or Instructor? ")
+    if user == 'Student' or user == 'Admin' or user == 'Instructor':
+        username = input("Enter username: ")
+        upassword = input("Enter password: ") 
+
+        #Checking credentials
+        c = database.cursor()
+        c.execute("""SELECT Email from '""" + user + """' WHERE '""" + user + """'.Email = '""" + username + """';""")
+        qr1 = c.fetchall()
+        c.close()
+
+        for i in qr1:
+            result1 = i[0]
+
+        c = database.cursor()
+        c.execute("""SELECT Password from '""" + user + """' WHERE Password = '""" + upassword + """' AND Email = '""" + username + """';""")
+        qr2= c.fetchall()
+        c.close()
+
+        for i in qr2:
+            result2 = i[0]
+
+        try:
+            if username == result1 and upassword == result2 :
+                print("\nLogin successful!")
+                
+                c = database.cursor()
+                c.execute('SELECT ID, FirstName, LastName FROM '+user+' WHERE '+user+'.Email = \''+username+'\'')
+                userInfo = list(c.fetchall())
+                c.close()
+                for row in userInfo:
+                    fName = row[1]
+                    lName = row[2]
+                    uID = row[0]
+                if user == 'Student':
+                    sUser = Student(str(fName), str(lName), str(uID))
+                    sUser.studentMenu(str(uID), username)
+                elif user == 'Instructor':
+                    iUser = Instructor(str(fName), str(lName), str(uID))
+                    iUser.instructorMenu()
+                elif user == 'Admin':
+                    aUser = Admin(str(fName), str(lName), str(uID))
+                    aUser.adminMenu()
+
+        except UnboundLocalError:
+            print("\ninvalid credentials.")
+            again = input("Would you like to try again? \nEnter 1 to go back to login \nEnter 2 to exit\n")
+            if again == '1':
+                login()
+            elif again == '2': 
+                sys.exit()
+    else: 
+        print('\nPlease enter a correct user type.')
+        login()
+
+# author: Naomi Torre
+# logout function    
+def logout():
+    print(" \nYou have successfully logged out. \nFor security reasons, exit your web browser.")
+    sys.exit()
