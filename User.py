@@ -179,7 +179,7 @@ class Student(User):
                 for value in studentResult:
                     newRoster = str(row[0]) + '-' + str(value[0])
         c = database.cursor()
-        updateRoster = 'UPDATE Course SET Roster = \'' + newRoster + '\' WHERE Course.CRN = ' + getCRN
+        updateRoster = 'UPDATE Course SET Roster = \'' + str(newRoster) + '\' WHERE Course.CRN = ' + str(getCRN)
         c.execute(updateRoster)
         c.close()
 
@@ -188,10 +188,10 @@ class Student(User):
         for row in schedule:
             if row[0] == None:
                 for value in studentResult:
-                    newSchedule = getCRN
+                    newSchedule = str(getCRN)
             elif row[0] != None:
                 for value in studentResult:
-                    newSchedule = str(row[0]) + '-' + getCRN
+                    newSchedule = str(row[0]) + '-' + str(getCRN)
         c = database.cursor()
         updateSched = 'UPDATE Student SET Schedule = \'' + newSchedule + '\' WHERE Student.ID = ' + studentID
         c.execute(updateSched)
@@ -248,7 +248,10 @@ class Student(User):
                     else:
                         print('you aren\'t registered in this course')
         c = database.cursor()
+        # quick fix for preventing an empty space from being input into the Course table, this was causing a couple issues that can be nipped in the bud right here.
         updateRoster = 'UPDATE Course SET Roster = \'' + newRoster + '\' WHERE Course.CRN = ' + getCRN
+        if not newRoster:
+            updateRoster = 'UPDATE Course SET Roster = NULL WHERE Course.CRN = ' + getCRN
         c.execute(updateRoster)
         c.close()
 
@@ -307,7 +310,6 @@ class Student(User):
                 logout()
 
 # class Instructor derived from User
-# ERROR WITH PRINTING COURSE ROSTER
 class Instructor(User):
 
     # constructor
