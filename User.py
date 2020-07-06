@@ -318,35 +318,38 @@ class Instructor(User):
         print('Instructor {} {} [{}] created'.format(self.firstName, self.lastName, self.ID))
 
     def printRoster(self):
-        getCRN = input('enter CRN of course to view roster: ')
-        c = database.cursor()
-        getRoster = 'SELECT Course.Roster FROM Course WHERE Course.CRN = ' + getCRN
-        c.execute(getRoster)
-        rosterResult = list(c.fetchall())
-        c.close()
-
-        rosterString = ''
-        for row in rosterResult:
-            rosterString = row[0]
-        
-        rosterList = []
-        if '-' in rosterString:
-            rosterList = rosterString.split('-')
-        else:
-            rosterList.append(rosterString)
-        
-        studentNames = []
-        for studentID in rosterList:
-            getStudentNames = 'SELECT Student.FirstName, Student.LastName, Student.Major, Student.GradYear FROM Student WHERE Student.ID = ' + studentID
+        try:
+            getCRN = input('enter CRN of course to view roster: ')
             c = database.cursor()
-            c.execute(getStudentNames)
-            studentItems = c.fetchone()
-            studentNames.append(studentItems)
+            getRoster = 'SELECT Course.Roster FROM Course WHERE Course.CRN = ' + getCRN
+            c.execute(getRoster)
+            rosterResult = list(c.fetchall())
             c.close()
 
-        for eachStudent in studentNames:
-            studentInfo = str(eachStudent[0]) + ' ' + str(eachStudent[1]) + ' - ' + str(eachStudent[2]) + ' - Class of ' + str(eachStudent[3])
-            print(studentInfo) 
+            rosterString = ''
+            for row in rosterResult:
+                rosterString = row[0]
+            
+            rosterList = []
+            if '-' in rosterString:
+                rosterList = rosterString.split('-')
+            else:
+                rosterList.append(rosterString)
+            
+            studentNames = []
+            for studentID in rosterList:
+                getStudentNames = 'SELECT Student.FirstName, Student.LastName, Student.Major, Student.GradYear FROM Student WHERE Student.ID = ' + studentID
+                c = database.cursor()
+                c.execute(getStudentNames)
+                studentItems = c.fetchone()
+                studentNames.append(studentItems)
+                c.close()
+
+            for eachStudent in studentNames:
+                studentInfo = str(eachStudent[0]) + ' ' + str(eachStudent[1]) + ' - ' + str(eachStudent[2]) + ' - Class of ' + str(eachStudent[3])
+                print(studentInfo)
+        except sqlite3.OperationalError:
+            print('\ncourse does not exist, or roster is empty.\n') 
 
     # author: Sterling
     # instructor menu function
