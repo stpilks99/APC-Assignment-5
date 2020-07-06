@@ -317,6 +317,8 @@ class Instructor(User):
         super().__init__(firstName, lastName, ID)
         print('Instructor {} {} [{}] created'.format(self.firstName, self.lastName, self.ID))
 
+    # print course roster for instructor
+    # author: Chandler Berry
     def printRoster(self):
         try:
             getCRN = input('enter CRN of course to view roster: ')
